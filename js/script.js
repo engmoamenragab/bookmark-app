@@ -1,18 +1,20 @@
-//NOTE decleare global variable
+//ANCHOR decleare global variable
 var bookmarkName = document.getElementById("bookmarkName"),
   bookmarkUrl = document.getElementById("bookmarkUrl"),
   addUpdateBtn = document.getElementById("addUpdateBtn"),
   cancelBtn = document.getElementById("cancelBtn"),
+  deleteBtnsArr = [],
+  updateBtnsArr = [],
   searchInp = document.getElementById("searchInp"),
   tBody = document.getElementById("tBody");
-//NOTE check local storage
+//ANCHOR check local storage
 if (localStorage.getItem("bookmarksListData") != null) {
   var bookmarksList = JSON.parse(localStorage.getItem("bookmarksListData"));
 } else {
   var bookmarksList = [];
 }
 displayBookmarksList();
-//NOTE add bookmark list item function
+//ANCHOR add bookmark list item function
 function addBookmarksListItem() {
   var bookmarksListItem = {
     bookmarksListItemName: bookmarkName.value,
@@ -23,11 +25,11 @@ function addBookmarksListItem() {
   displayBookmarksList();
   clearForm();
 }
-//NOTE connect addUpdateBtn with addBookmarksListItem() function
+//ANCHOR connect addUpdateBtn with addBookmarksListItem() function
 addUpdateBtn.addEventListener("click", addBookmarksListItem);
-//NOTE display bookmark list function
+//ANCHOR display bookmark list function
 function displayBookmarksList() {
-  var trs = ``;
+  var trs = "";
   for (var i = 0; i < bookmarksList.length; i++) {
     trs += `<tr>
     <td>${i}</td>
@@ -38,9 +40,37 @@ function displayBookmarksList() {
     </tr>`;
   }
   tBody.innerHTML = trs;
+  deleteBtnsArr = Array.from(document.querySelectorAll(".deleteBtn"));
+  updateBtnsArr = Array.from(document.querySelectorAll(".updateBtn"));
 }
-//NOTE clear form function
+//ANCHOR delete bookmarks list item function
+function deleteBookmarksListItem(x) {
+  console.log(x);
+  bookmarksList.splice(x, 1);
+  console.log(bookmarksList);
+  localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
+  displayBookmarksList();
+}
+//ANCHOR connect delete bookmarks list item function with delete btns
+for (var i = 0; i < deleteBtnsArr.length; i++) {
+  deleteBtnsArr[i].addEventListener("click", function () {
+    deleteBookmarksListItem(i);
+  });
+}
+//ANCHOR for update bookmarks list item function
+function forUpdateBookmarksListItem(x) {
+  console.log(x);
+  bookmarkName.value = bookmarksList[x].bookmarksListItemName;
+  bookmarkUrl.value = bookmarksList[x].bookmarksListItemUrl;
+}
+//ANCHOR connect for update bookmarks list item function with update btns
+for (var i = 0; i < updateBtnsArr.length; i++) {
+  updateBtnsArr[i].addEventListener("click", function () {
+    forUpdateBookmarksListItem(i);
+  });
+}
+//ANCHOR clear form function
 function clearForm() {
-  bookmarkName.value = ``;
-  bookmarkUrl.value = ``;
+  bookmarkName.value = "";
+  bookmarkUrl.value = "";
 }
