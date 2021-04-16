@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Ubuntu', sans-serif;
+}
+.form {
+  border: 1px solid #999999;
+  border-radius: 10px;
+  padding: 40px;
+  transition: box-shadow 0.2s ease-in-out;
+}
+.form:hover {
+  box-shadow: 1px 0 3px 0 #999999;
+}
