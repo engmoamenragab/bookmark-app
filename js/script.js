@@ -43,38 +43,6 @@ function displayBookmarksList() {
   deleteBtnsArr = Array.from(document.querySelectorAll(".deleteBtn"));
   updateBtnsArr = Array.from(document.querySelectorAll(".updateBtn"));
 }
-//ANCHOR delete bookmarks list item function
-function deleteBookmarksListItem(x) {
-  console.log(x);
-  bookmarksList.splice(x, 1);
-  console.log(bookmarksList);
-  localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
-  displayBookmarksList();
-}
-//ANCHOR connect delete bookmarks list item function with delete btns
-// for (var i = 0; i < deleteBtnsArr.length; i++) {
-//   deleteBtnsArr[i].addEventListener("click", function () {
-//     deleteBookmarksListItem(i);
-//   });
-// }
-deleteBtnsArr.forEach(addEventListener("click", function () {
-  deleteBookmarksListItem();
-}));
-//ANCHOR for update bookmarks list item function
-function forUpdateBookmarksListItem(x) {
-  console.log(x);
-  bookmarkName.value = bookmarksList[x].bookmarksListItemName;
-  bookmarkUrl.value = bookmarksList[x].bookmarksListItemUrl;
-}
-//ANCHOR connect for update bookmarks list item function with update btns
-// for (var i = 0; i < updateBtnsArr.length; i++) {
-//   updateBtnsArr[i].addEventListener("click", function () {
-//     forUpdateBookmarksListItem(i);
-//   });
-// }
-updateBtnsArr.forEach(addEventListener("click", function () {
-  forUpdateBookmarksListItem();
-}));
 //ANCHOR clear form function
 function clearForm() {
   bookmarkName.value = "";
