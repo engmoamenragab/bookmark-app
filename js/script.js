@@ -1,4 +1,4 @@
-//ANCHOR decleare global variable
+//ANCHOR declare global variable
 var bookmarkName = document.getElementById("bookmarkName"),
   bookmarkUrl = document.getElementById("bookmarkUrl"),
   addUpdateBtn = document.getElementById("addUpdateBtn"),
@@ -6,7 +6,8 @@ var bookmarkName = document.getElementById("bookmarkName"),
   deleteBtnsArr = [],
   updateBtnsArr = [],
   searchInp = document.getElementById("searchInp"),
-  tBody = document.getElementById("tBody");
+  tBody = document.getElementById("tBody"),
+  bookmarksListItem = {};
 //ANCHOR check local storage
 if (localStorage.getItem("bookmarksListData") != null) {
   var bookmarksList = JSON.parse(localStorage.getItem("bookmarksListData"));
@@ -52,14 +53,20 @@ function deleteBookmarksListItem(x) {
   displayBookmarksList();
 }
 //ANCHOR connect delete bookmarks list item function with delete btns
+//FIXME
 // for (var i = 0; i < deleteBtnsArr.length; i++) {
 //   deleteBtnsArr[i].addEventListener("click", function () {
 //     deleteBookmarksListItem(i);
 //   });
 // }
-deleteBtnsArr.forEach(addEventListener("click", function () {
-  deleteBookmarksListItem();
-}));
+//FIXME
+// deleteBtnsArr.forEach(addEventListener("click", function () {
+//   deleteBookmarksListItem();
+// }));
+//FIXME
+deleteBtnsArr.forEach(function (item) {
+  item.addEventListener("click", deleteBookmarksListItem);
+});
 //ANCHOR for update bookmarks list item function
 function forUpdateBookmarksListItem(x) {
   console.log(x);
@@ -67,14 +74,20 @@ function forUpdateBookmarksListItem(x) {
   bookmarkUrl.value = bookmarksList[x].bookmarksListItemUrl;
 }
 //ANCHOR connect for update bookmarks list item function with update btns
+//FIXME
 // for (var i = 0; i < updateBtnsArr.length; i++) {
 //   updateBtnsArr[i].addEventListener("click", function () {
 //     forUpdateBookmarksListItem(i);
 //   });
 // }
-updateBtnsArr.forEach(addEventListener("click", function () {
-  forUpdateBookmarksListItem();
-}));
+//FIXME
+// updateBtnsArr.forEach(addEventListener("click", function () {
+//   forUpdateBookmarksListItem();
+// }));
+//FIXME
+updateBtnsArr.forEach(function (index) {
+  index.addEventListener("click", forUpdateBookmarksListItem);
+});
 //ANCHOR clear form function
 function clearForm() {
   bookmarkName.value = "";
