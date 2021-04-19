@@ -6,7 +6,8 @@ var bookmarkName = document.getElementById("bookmarkName"),
   deleteBtnsArr = [],
   updateBtnsArr = [],
   searchInp = document.getElementById("searchInp"),
-  tBody = document.getElementById("tBody");
+  tBody = document.getElementById("tBody"),
+  updateIndexNumber = "";
 //ANCHOR check local storage
 if (localStorage.getItem("bookmarksListData") != null) {
   var bookmarksList = JSON.parse(localStorage.getItem("bookmarksListData"));
@@ -14,7 +15,7 @@ if (localStorage.getItem("bookmarksListData") != null) {
   var bookmarksList = [];
 }
 displayBookmarksList();
-//ANCHOR add bookmark list item function
+//ANCHOR add and update bookmark list item function
 function addUpdateBookmarksListItem() {
   if (addUpdateBtn.innerHTML == "Add Bookmark") {
     var bookmarksListItem = {
@@ -26,13 +27,13 @@ function addUpdateBookmarksListItem() {
     displayBookmarksList();
     clearForm();
   } else if (addUpdateBtn.innerHTML == "Update Bookmark") {
-    var updateIndexNumber = returnIndexNumber();
     bookmarksList[updateIndexNumber].bookmarksListItemName = bookmarkName.value;
     bookmarksList[updateIndexNumber].bookmarksListItemUrl = bookmarkUrl.value;
     localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
     displayBookmarksList();
     clearForm();
     cancelBtn.classList.add("invisible");
+    addUpdateBtn.innerHTML = "Add Bookmark";
   }
 }
 //ANCHOR connect addUpdateBtn with addBookmarksListItem() function
@@ -87,15 +88,14 @@ document.addEventListener("click", function (e) {
       bookmarkUrl.value = bookmarksList[updateIndex].bookmarksListItemUrl;
       addUpdateBtn.innerHTML = "Update Bookmark";
       cancelBtn.classList.remove("invisible");
+      updateIndexNumber = updateIndex;
     } else {
       updateIndex = e.target.parentNode.parentNode.parentNode.firstElementChild.innerHTML;
       bookmarkName.value = bookmarksList[updateIndex].bookmarksListItemName;
       bookmarkUrl.value = bookmarksList[updateIndex].bookmarksListItemUrl;
       addUpdateBtn.innerHTML = "Update Bookmark";
       cancelBtn.classList.remove("invisible");
+      updateIndexNumber = updateIndex;
     }
-  }
-  function returnIndexNumber() {
-    return updateIndex;
   }
 });
