@@ -108,3 +108,31 @@ document.addEventListener("click", function (e) {
     }
   }
 });
+//ANCHOR real time search function
+searchInp.addEventListener("keyup", function () {
+  var searchedWord = searchInp.value.toLowerCase();
+  var trs = "";
+  for (var i = 0; i < bookmarksList.length; i++) {
+    if (bookmarksList[i].bookmarksListItemName.toLowerCase().includes(searchedWord) && searchedWord !== "") {
+      var text = bookmarksList[i].bookmarksListItemName;
+      var regexText = new RegExp(searchedWord, "gi");
+      console.log(regexText);
+      var newText = text.replace(regexText, `<mark style="padding: 0; background-color: yellow;">${searchedWord}</mark>`);
+      trs += `<tr><td>${i}</td>
+        <td>${newText}</td>
+        <td><a href="${bookmarksList[i].bookmarksListItemUrl}" target="_blank" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a></td>
+        <td><button class="btn btn-warning updateBtn"><i class="fas fa-edit"></i></button></td>
+        <td><button class="btn btn-danger deleteBtn"><i class="far fa-trash-alt"></i></button></td>
+        </tr>`;
+    } else if (bookmarksList[i].bookmarksListItemName.toLowerCase().includes(searchedWord)) {
+      trs += `<tr>
+      <td>${i}</td>
+      <td>${bookmarksList[i].bookmarksListItemName}</td>
+      <td><a href="${bookmarksList[i].bookmarksListItemUrl}" target="_blank" class="btn btn-info"><i class="fas fa-external-link-alt"></i></a></td>
+      <td><button class="btn btn-warning updateBtn"><i class="fas fa-edit"></i></button></td>
+      <td><button class="btn btn-danger deleteBtn"><i class="far fa-trash-alt"></i></button></td>
+      </tr>`;
+    }
+  }
+  tBody.innerHTML = trs;
+});
