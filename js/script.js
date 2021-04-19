@@ -15,18 +15,28 @@ if (localStorage.getItem("bookmarksListData") != null) {
 }
 displayBookmarksList();
 //ANCHOR add bookmark list item function
-function addBookmarksListItem() {
-  var bookmarksListItem = {
-    bookmarksListItemName: bookmarkName.value,
-    bookmarksListItemUrl: bookmarkUrl.value
-  };
-  bookmarksList.push(bookmarksListItem);
-  localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
-  displayBookmarksList();
-  clearForm();
+function addUpdateBookmarksListItem() {
+  if (addUpdateBtn.innerHTML == "Add Bookmark") {
+    var bookmarksListItem = {
+      bookmarksListItemName: bookmarkName.value,
+      bookmarksListItemUrl: bookmarkUrl.value
+    };
+    bookmarksList.push(bookmarksListItem);
+    localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
+    displayBookmarksList();
+    clearForm();
+  } else if (addUpdateBtn.innerHTML == "Update Bookmark") {
+    var updateIndexNumber = returnIndexNumber();
+    bookmarksList[updateIndexNumber].bookmarksListItemName = bookmarkName.value;
+    bookmarksList[updateIndexNumber].bookmarksListItemUrl = bookmarkUrl.value;
+    localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
+    displayBookmarksList();
+    clearForm();
+    cancelBtn.classList.add("invisible");
+  }
 }
 //ANCHOR connect addUpdateBtn with addBookmarksListItem() function
-addUpdateBtn.addEventListener("click", addBookmarksListItem);
+addUpdateBtn.addEventListener("click", addUpdateBookmarksListItem);
 //ANCHOR display bookmark list function
 function displayBookmarksList() {
   var trs = "";
@@ -48,3 +58,44 @@ function clearForm() {
   bookmarkName.value = "";
   bookmarkUrl.value = "";
 }
+//ANCHOR delete btns operation
+document.addEventListener("click", function (e) {
+  var deleteIndex;
+  if (e.target.className.includes("deleteBtn") || e.target.className.includes("far")) {
+    if (e.target.className.includes("deleteBtn")) {
+      deleteIndex = e.target.parentNode.parentNode.firstElementChild.innerHTML;
+      e.target.parentNode.parentNode.remove();
+      bookmarksList.splice(deleteIndex, 1);
+      localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
+      displayBookmarksList();
+    } else {
+      deleteIndex = e.target.parentNode.parentNode.parentNode.firstElementChild.innerHTML;
+      e.target.parentNode.parentNode.parentNode.remove();
+      bookmarksList.splice(deleteIndex, 1);
+      localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
+      displayBookmarksList();
+    }
+  }
+});
+//ANCHOR update btns operation
+document.addEventListener("click", function (e) {
+  var updateIndex;
+  if (e.target.className.includes("updateBtn") || e.target.className.includes("fas")) {
+    if (e.target.className.includes("updateBtn")) {
+      updateIndex = e.target.parentNode.parentNode.firstElementChild.innerHTML;
+      bookmarkName.value = bookmarksList[updateIndex].bookmarksListItemName;
+      bookmarkUrl.value = bookmarksList[updateIndex].bookmarksListItemUrl;
+      addUpdateBtn.innerHTML = "Update Bookmark";
+      cancelBtn.classList.remove("invisible");
+    } else {
+      updateIndex = e.target.parentNode.parentNode.parentNode.firstElementChild.innerHTML;
+      bookmarkName.value = bookmarksList[updateIndex].bookmarksListItemName;
+      bookmarkUrl.value = bookmarksList[updateIndex].bookmarksListItemUrl;
+      addUpdateBtn.innerHTML = "Update Bookmark";
+      cancelBtn.classList.remove("invisible");
+    }
+  }
+  function returnIndexNumber() {
+    return updateIndex;
+  }
+});
