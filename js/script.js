@@ -7,7 +7,7 @@ var bookmarkName = document.getElementById("bookmarkName"),
   updateBtnsArr = [],
   searchInp = document.getElementById("searchInp"),
   tBody = document.getElementById("tBody"),
-  bookmarksListItem = {};
+  updateIndexNumber = "";
 //ANCHOR check local storage
 if (localStorage.getItem("bookmarksListData") != null) {
   var bookmarksList = JSON.parse(localStorage.getItem("bookmarksListData"));
@@ -15,19 +15,29 @@ if (localStorage.getItem("bookmarksListData") != null) {
   var bookmarksList = [];
 }
 displayBookmarksList();
-//ANCHOR add bookmark list item function
-function addBookmarksListItem() {
-  var bookmarksListItem = {
-    bookmarksListItemName: bookmarkName.value,
-    bookmarksListItemUrl: bookmarkUrl.value
-  };
-  bookmarksList.push(bookmarksListItem);
-  localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
-  displayBookmarksList();
-  clearForm();
+//ANCHOR add and update bookmark list item function
+function addUpdateBookmarksListItem() {
+  if (addUpdateBtn.innerHTML == "Add Bookmark") {
+    var bookmarksListItem = {
+      bookmarksListItemName: bookmarkName.value,
+      bookmarksListItemUrl: bookmarkUrl.value
+    };
+    bookmarksList.push(bookmarksListItem);
+    localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
+    displayBookmarksList();
+    clearForm();
+  } else if (addUpdateBtn.innerHTML == "Update Bookmark") {
+    bookmarksList[updateIndexNumber].bookmarksListItemName = bookmarkName.value;
+    bookmarksList[updateIndexNumber].bookmarksListItemUrl = bookmarkUrl.value;
+    localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
+    displayBookmarksList();
+    clearForm();
+    cancelBtn.classList.add("invisible");
+    addUpdateBtn.innerHTML = "Add Bookmark";
+  }
 }
 //ANCHOR connect addUpdateBtn with addBookmarksListItem() function
-addUpdateBtn.addEventListener("click", addBookmarksListItem);
+addUpdateBtn.addEventListener("click", addUpdateBookmarksListItem);
 //ANCHOR display bookmark list function
 function displayBookmarksList() {
   var trs = "";
@@ -44,52 +54,48 @@ function displayBookmarksList() {
   deleteBtnsArr = Array.from(document.querySelectorAll(".deleteBtn"));
   updateBtnsArr = Array.from(document.querySelectorAll(".updateBtn"));
 }
-//ANCHOR delete bookmarks list item function
-function deleteBookmarksListItem(x) {
-  console.log(x);
-  bookmarksList.splice(x, 1);
-  console.log(bookmarksList);
-  localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
-  displayBookmarksList();
-}
-//ANCHOR connect delete bookmarks list item function with delete btns
-//FIXME
-// for (var i = 0; i < deleteBtnsArr.length; i++) {
-//   deleteBtnsArr[i].addEventListener("click", function () {
-//     deleteBookmarksListItem(i);
-//   });
-// }
-//FIXME
-// deleteBtnsArr.forEach(addEventListener("click", function () {
-//   deleteBookmarksListItem();
-// }));
-//FIXME
-deleteBtnsArr.forEach(function (item) {
-  item.addEventListener("click", deleteBookmarksListItem);
-});
-//ANCHOR for update bookmarks list item function
-function forUpdateBookmarksListItem(x) {
-  console.log(x);
-  bookmarkName.value = bookmarksList[x].bookmarksListItemName;
-  bookmarkUrl.value = bookmarksList[x].bookmarksListItemUrl;
-}
-//ANCHOR connect for update bookmarks list item function with update btns
-//FIXME
-// for (var i = 0; i < updateBtnsArr.length; i++) {
-//   updateBtnsArr[i].addEventListener("click", function () {
-//     forUpdateBookmarksListItem(i);
-//   });
-// }
-//FIXME
-// updateBtnsArr.forEach(addEventListener("click", function () {
-//   forUpdateBookmarksListItem();
-// }));
-//FIXME
-updateBtnsArr.forEach(function (index) {
-  index.addEventListener("click", forUpdateBookmarksListItem);
-});
 //ANCHOR clear form function
 function clearForm() {
   bookmarkName.value = "";
   bookmarkUrl.value = "";
 }
+//ANCHOR delete btns operation
+document.addEventListener("click", function (e) {
+  var deleteIndex;
+  if (e.target.className.includes("deleteBtn") || e.target.className.includes("far")) {
+    if (e.target.className.includes("deleteBtn")) {
+      deleteIndex = e.target.parentNode.parentNode.firstElementChild.innerHTML;
+      e.target.parentNode.parentNode.remove();
+      bookmarksList.splice(deleteIndex, 1);
+      localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
+      displayBookmarksList();
+    } else {
+      deleteIndex = e.target.parentNode.parentNode.parentNode.firstElementChild.innerHTML;
+      e.target.parentNode.parentNode.parentNode.remove();
+      bookmarksList.splice(deleteIndex, 1);
+      localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
+      displayBookmarksList();
+    }
+  }
+});
+//ANCHOR update btns operation
+document.addEventListener("click", function (e) {
+  var updateIndex;
+  if (e.target.className.includes("updateBtn") || e.target.className.includes("fas")) {
+    if (e.target.className.includes("updateBtn")) {
+      updateIndex = e.target.parentNode.parentNode.firstElementChild.innerHTML;
+      bookmarkName.value = bookmarksList[updateIndex].bookmarksListItemName;
+      bookmarkUrl.value = bookmarksList[updateIndex].bookmarksListItemUrl;
+      addUpdateBtn.innerHTML = "Update Bookmark";
+      cancelBtn.classList.remove("invisible");
+      updateIndexNumber = updateIndex;
+    } else {
+      updateIndex = e.target.parentNode.parentNode.parentNode.firstElementChild.innerHTML;
+      bookmarkName.value = bookmarksList[updateIndex].bookmarksListItemName;
+      bookmarkUrl.value = bookmarksList[updateIndex].bookmarksListItemUrl;
+      addUpdateBtn.innerHTML = "Update Bookmark";
+      cancelBtn.classList.remove("invisible");
+      updateIndexNumber = updateIndex;
+    }
+  }
+});
