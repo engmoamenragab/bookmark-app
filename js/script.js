@@ -3,8 +3,6 @@ var bookmarkName = document.getElementById("bookmarkName"),
   bookmarkUrl = document.getElementById("bookmarkUrl"),
   addUpdateBtn = document.getElementById("addUpdateBtn"),
   cancelBtn = document.getElementById("cancelBtn"),
-  deleteBtnsArr = [],
-  updateBtnsArr = [],
   searchInp = document.getElementById("searchInp"),
   tBody = document.getElementById("tBody"),
   updateIndexNumber = "";
@@ -51,8 +49,6 @@ function displayBookmarksList() {
     </tr>`;
   }
   tBody.innerHTML = trs;
-  deleteBtnsArr = Array.from(document.querySelectorAll(".deleteBtn"));
-  updateBtnsArr = Array.from(document.querySelectorAll(".updateBtn"));
 }
 //ANCHOR clear form function
 function clearForm() {
