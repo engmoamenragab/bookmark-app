@@ -59,6 +59,15 @@ function clearForm() {
   bookmarkName.value = "";
   bookmarkUrl.value = "";
 }
+//ANCHOR cancel update Function
+function cancelUpdate() {
+  clearForm();
+  cancelBtn.classList.add("invisible");
+  addUpdateBtn.innerHTML = "Add Bookmark";
+
+}
+//ANCHOR connect cancel btn with cancel update function
+cancelBtn.addEventListener("click", cancelUpdate);
 //ANCHOR delete btns operation
 document.addEventListener("click", function (e) {
   var deleteIndex;
