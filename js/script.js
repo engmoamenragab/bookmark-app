@@ -67,7 +67,7 @@ cancelBtn.addEventListener("click", cancelUpdate);
 //ANCHOR delete btns operation
 document.addEventListener("click", function (e) {
   var deleteIndex;
-  if (e.target.className.includes("deleteBtn") || e.target.className.includes("far")) {
+  if (e.target.className.includes("deleteBtn") || e.target.className.includes("fa-trash-alt")) {
     if (e.target.className.includes("deleteBtn")) {
       deleteIndex = e.target.parentNode.parentNode.firstElementChild.innerHTML;
       e.target.parentNode.parentNode.remove();
@@ -86,7 +86,7 @@ document.addEventListener("click", function (e) {
 //ANCHOR update btns operation
 document.addEventListener("click", function (e) {
   var updateIndex;
-  if (e.target.className.includes("updateBtn") || e.target.className.includes("fas")) {
+  if (e.target.className.includes("updateBtn") || e.target.className.includes("fa-edit")) {
     if (e.target.className.includes("updateBtn")) {
       updateIndex = e.target.parentNode.parentNode.firstElementChild.innerHTML;
       bookmarkName.value = bookmarksList[updateIndex].bookmarksListItemName;
