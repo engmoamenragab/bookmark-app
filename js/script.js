@@ -1,11 +1,16 @@
 //ANCHOR declare global variable
 var bookmarkName = document.getElementById("bookmarkName"),
   bookmarkUrl = document.getElementById("bookmarkUrl"),
+  bookmarkNameAlert = document.querySelector(".bookmarkNameRow .form-alert"),
+  bookmarkUrlAlert = document.querySelector(".bookmarkUrlRow .form-alert"),
+  btnsAlert = document.querySelector(".btnsRow .form-alert"),
   addUpdateBtn = document.getElementById("addUpdateBtn"),
   cancelBtn = document.getElementById("cancelBtn"),
   searchInp = document.getElementById("searchInp"),
   tBody = document.getElementById("tBody"),
-  updateIndexNumber = "";
+  updateIndexNumber = "",
+  bookmarkNameValue,
+  bookmarkUrlValue;
 //ANCHOR check local storage
 if (localStorage.getItem("bookmarksListData") != null) {
   var bookmarksList = JSON.parse(localStorage.getItem("bookmarksListData"));
@@ -15,23 +20,37 @@ if (localStorage.getItem("bookmarksListData") != null) {
 displayBookmarksList();
 //ANCHOR add and update bookmark list item function
 function addUpdateBookmarksListItem() {
-  if (addUpdateBtn.innerHTML == "Add Bookmark") {
-    var bookmarksListItem = {
-      bookmarksListItemName: bookmarkName.value,
-      bookmarksListItemUrl: bookmarkUrl.value
-    };
-    bookmarksList.push(bookmarksListItem);
-    localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
-    displayBookmarksList();
-    clearForm();
-  } else if (addUpdateBtn.innerHTML == "Update Bookmark") {
-    bookmarksList[updateIndexNumber].bookmarksListItemName = bookmarkName.value;
-    bookmarksList[updateIndexNumber].bookmarksListItemUrl = bookmarkUrl.value;
-    localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
-    displayBookmarksList();
-    clearForm();
-    cancelBtn.classList.add("invisible");
-    addUpdateBtn.innerHTML = "Add Bookmark";
+  var bookmarkNameValue = bookmarkName.value;
+  var bookmarkUrlValue = bookmarkUrl.value;
+  if (bookmarkNameValue != "" && bookmarkUrlValue != "") {
+    if (validatebookmarkName() && validatebookmarkUrl()) {
+      if (addUpdateBtn.innerHTML == "Add Bookmark") {
+        var bookmarksListItem = {
+          bookmarksListItemName: bookmarkName.value,
+          bookmarksListItemUrl: bookmarkUrl.value
+        };
+        bookmarksList.push(bookmarksListItem);
+        localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
+        displayBookmarksList();
+        clearForm();
+        clearbookmarkNameValidation();
+        clearbookmarkUrlValidation();
+        btnsAlert.classList.add("d-none");
+      } else if (addUpdateBtn.innerHTML == "Update Bookmark") {
+        bookmarksList[updateIndexNumber].bookmarksListItemName = bookmarkName.value;
+        bookmarksList[updateIndexNumber].bookmarksListItemUrl = bookmarkUrl.value;
+        localStorage.setItem("bookmarksListData", JSON.stringify(bookmarksList));
+        displayBookmarksList();
+        clearForm();
+        clearbookmarkNameValidation();
+        clearbookmarkUrlValidation();
+        btnsAlert.classList.add("d-none");
+        cancelBtn.classList.add("invisible");
+        addUpdateBtn.innerHTML = "Add Bookmark";
+      }
+    }
+  } else {
+    btnsAlert.classList.remove("d-none");
   }
 }
 //ANCHOR connect addUpdateBtn with addBookmarksListItem() function
@@ -132,3 +151,65 @@ searchInp.addEventListener("keyup", function () {
   }
   tBody.innerHTML = trs;
 });
+//ANCHOR validate bookmark Name function
+function validatebookmarkName() {
+  var bookmarkNameRegex = /^[A-Z][a-z ]{3,20}$/;
+  bookmarkNameValue = bookmarkName.value;
+  validatebookmarkNameRegex = bookmarkNameRegex.test(bookmarkNameValue);
+  if (validatebookmarkNameRegex == true) {
+    bookmarkName.classList.add("is-valid");
+    bookmarkName.classList.remove("is-invalid");
+    bookmarkNameAlert.classList.add("d-none");
+    return true;
+  } else {
+    bookmarkName.classList.remove("is-valid");
+    bookmarkName.classList.add("is-invalid");
+    bookmarkNameAlert.classList.remove("d-none");
+    return false;
+  }
+}
+//ANCHOR clear bookmark name validation function
+function clearbookmarkNameValidation() {
+  bookmarkNameValue = bookmarkName.value;
+  if (bookmarkNameValue == "") {
+    bookmarkName.classList.remove("is-valid");
+    bookmarkName.classList.remove("is-invalid");
+    bookmarkNameAlert.classList.add("d-none");
+    return true;
+  }
+}
+//ANCHOR connect clear bookmark name validation function with bookmark name input
+bookmarkName.addEventListener("keyup", validatebookmarkName);
+//ANCHOR connect clear validate bookmark name function with bookmark name input
+bookmarkName.addEventListener("blur", clearbookmarkNameValidation);
+//ANCHOR validate bookmark url function
+function validatebookmarkUrl() {
+  var bookmarkUrlRegex = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+  bookmarkUrlValue = bookmarkUrl.value;
+  validatebookmarkUrlRegex = bookmarkUrlRegex.test(bookmarkUrlValue);
+  if (validatebookmarkUrlRegex == true) {
+    bookmarkUrl.classList.add("is-valid");
+    bookmarkUrl.classList.remove("is-invalid");
+    bookmarkUrlAlert.classList.add("d-none");
+    return true;
+  } else {
+    bookmarkUrl.classList.remove("is-valid");
+    bookmarkUrl.classList.add("is-invalid");
+    bookmarkUrlAlert.classList.remove("d-none");
+    return false;
+  }
+}
+//ANCHOR clear bookmark url validation function
+function clearbookmarkUrlValidation() {
+  bookmarkUrlValue = bookmarkUrl.value;
+  if (bookmarkUrlValue == "") {
+    bookmarkUrl.classList.remove("is-valid");
+    bookmarkUrl.classList.remove("is-invalid");
+    bookmarkUrlAlert.classList.add("d-none");
+    return true;
+  }
+}
+//ANCHOR connect clear bookmark url validation function with bookmark url input
+bookmarkUrl.addEventListener("keyup", validatebookmarkUrl);
+//ANCHOR connect clear validate bookmark url function with bookmark url input
+bookmarkUrl.addEventListener("blur", clearbookmarkUrlValidation);

@@ -13,16 +13,21 @@
     <div class="container">
       <h1 class="text-center my-5 font-weight-bold">Bookmark App</h1>
       <div class="form">
-        <div class="form-group">
+        <div class="bookmarkNameRow form-group">
           <label for="bookmarkName">Bookmark Name</label>
-          <input type="text" class="form-control" id="bookmarkName" placeholder="Type Your Bookmark Name" />
+          <input type="text" class="form-control" id="bookmarkName" placeholder="Type Your Bookmark Name" autocomplete="off" />
+          <div class="alert alert-danger w-100 mt-2 d-none form-alert">Please Start With Capital Letter and The Name Should be 3 to 20 characters!</div>
         </div>
-        <div class="form-group">
+        <div class="bookmarkUrlRow form-group">
           <label for="bookmarkUrl">Bookmark URL</label>
-          <input type="text" class="form-control" id="bookmarkUrl" placeholder="Type Your Bookmark URL" />
+          <input type="text" class="form-control" id="bookmarkUrl" placeholder="Type Your Bookmark URL" autocomplete="off" />
+          <div class="alert alert-danger w-100 mt-2 d-none form-alert">Please provide a Valid URL!</div>
         </div>
-        <button id="addUpdateBtn" class="btn btn-success">Add Bookmark</button>
-        <button id="cancelBtn" class="btn btn-danger invisible">Cancel Update</button>
+        <div class="btnsRow form-group">
+          <button id="addUpdateBtn" class="btn btn-success">Add Bookmark</button>
+          <button id="cancelBtn" class="btn btn-danger invisible">Cancel Update</button>
+          <div class="alert alert-danger w-100 mt-2 d-none form-alert">All Field are Required!</div>
+        </div>
       </div>
     </div>
     <div class="container">
