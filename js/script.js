@@ -53,8 +53,14 @@ function addUpdateBookmarksListItem() {
     btnsAlert.classList.remove("d-none");
   }
 }
-//ANCHOR connect addUpdateBtn with addBookmarksListItem() function
+//ANCHOR clear add Update Btn validation function
+function clearAddUpdateValidation() {
+  btnsAlert.classList.add("d-none");
+}
+//ANCHOR connect add Update Btn with add Bookmarks List Item function
 addUpdateBtn.addEventListener("click", addUpdateBookmarksListItem);
+//ANCHOR connect add Update Btn with clear add Update Btn validation function
+addUpdateBtn.addEventListener("blur", clearAddUpdateValidation);
 //ANCHOR display bookmark list function
 function displayBookmarksList() {
   var trs = "";
